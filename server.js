@@ -1,8 +1,8 @@
+require('dotenv').config()
 const express = require('express');
 const { init, getBooks, getBooksByEditorial, getNewBooks } = require('./config/db')
 
 const app = express();
-const port = 1337;
 
 app.use(express.json())
 
@@ -35,6 +35,6 @@ app.get('/newbooks', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server listening on port: ${port}`);
+    console.log(`Server listening on port: ${process.env.PORT}`);
     console.log('Press Ctrl + C to finish...');
 });
