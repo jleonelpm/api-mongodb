@@ -18,11 +18,11 @@ const init = () =>
         console.log('Successful Conexion..')
     })
 
-/* const getBooks = async () => {
+const getBook = async (title) => {
     const collection = db.collection('books')
-    const query = await collection.find({ "title": "Database Systems" }).toArray()
+    const query = await collection.find({ "title": title }).toArray()
     return query;
-} */
+}
 
 const getBooks = async () => {
     const collection = db.collection('books')
@@ -30,17 +30,38 @@ const getBooks = async () => {
     return query;
 }
 
-
 const getBooksByEditorial = async (editorial) => {
     const collection = db.collection('books')
     const query = await collection.find({ "editorial": editorial }).toArray()
     return query;
 }
 
-const getNewBooks = async (editorial) => {
+const getNewBooks = async () => {
     const collection = db.collection('books')
     const query = await collection.find({ "year": { $gte: 2000 } }).toArray();
     return query;
 }
 
-module.exports = { init, getBooks, getBooksByEditorial, getNewBooks }
+const insertBook = async (book) => {
+    let result
+    
+    try {
+        const collection = db.collection('books')
+
+        const query = await collection.insertOne(book);
+
+        result = {
+            result: book
+        }
+
+    } catch (err) {
+        result = {
+            result: err
+        }
+    }
+
+    return result;
+
+}
+
+module.exports = { init, getBooks, getBooksByEditorial, getNewBooks, insertBook }
