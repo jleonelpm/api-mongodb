@@ -1,6 +1,6 @@
 require('dotenv').config()
 const express = require('express');
-const { init, getBooks, getBooksByEditorial, getNewBooks, insertBook } = require('./config/db')
+const { init, getBooks, getBooksByEditorial, getNewBooks, insertBook, updateBook } = require('./config/db')
 
 const app = express();
 const port = process.env.PORT;
@@ -50,6 +50,21 @@ app.post('/book', async (req, res) => {
     res.json(items)
 });
  
+//Update Book
+app.put('/book', async (req, res) => {
+    const book = {
+        _id: req.body._id,
+        title: req.body.title,
+        author: req.body.author,
+        year: req.body.year,
+        editorial: req.body.editorial,
+        price: req.body.price
+    };
+
+    const items = await updateBook(book);
+
+    res.json(items)
+});
 
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);

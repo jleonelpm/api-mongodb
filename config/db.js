@@ -44,12 +44,9 @@ const getNewBooks = async () => {
 
 const insertBook = async (book) => {
     let result
-    
     try {
         const collection = db.collection('books')
-
         const query = await collection.insertOne(book);
-
         result = {
             result: book
         }
@@ -61,7 +58,45 @@ const insertBook = async (book) => {
     }
 
     return result;
-
 }
 
-module.exports = { init, getBooks, getBooksByEditorial, getNewBooks, insertBook }
+const updateBook = async (book) => {
+
+/*     
+Example on Body->Raw->Json with Postman
+{
+        "title": "Panucho",
+        "author": "Nojoch",
+        "year": 2023,
+        "price": 3,
+        "editorial" : "Yuca",
+        "isbn" : 16
+    }     */
+
+    let result
+    try {
+        const collection = db.collection('books')
+        const query = await collection.findOneAndUpdate(
+            { isbn: 16 }, {
+                $set: {
+                    title: book.title,
+                    author: book.author,
+                    year: book.year,
+                    editorial: book.editorial,
+                    price: book.price 
+                }
+        });
+
+        result = {
+            result: query
+        }
+    } catch (err) {
+        result = {
+            result: err
+        }
+    }
+
+    return result;
+}
+
+module.exports = { init, getBooks, getBooksByEditorial, getNewBooks, insertBook, updateBook }
